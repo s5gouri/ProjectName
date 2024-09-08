@@ -5,7 +5,7 @@ const {
   confirmation,
   createcookie,
   updating,
-} = require("../controllers/log_functions");
+} = require("../controllers/log_function");
 const rt1 = express.Router();
 
 rt1.post("/sign-up", signup);
