@@ -147,12 +147,12 @@ app.get(
 );
 
 app.use("/log", rt1);
-app.use("/user", rt2);
-app.use("/rag", rt3);
+// app.use("/user", rt2);
+// app.use("/rag", rt3);
 app.get("/", (req, res) => {
   res.send("HELLO WORLD");
 });
 
-app.listen(PORT, () => {
+app.listen(8000, () => {
   console.log(`SERVER STARTED!! CPU--->${process.pid}`);
 });
