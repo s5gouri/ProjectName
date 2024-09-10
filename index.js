@@ -4,6 +4,9 @@ require("dotenv").config();
 const { connect } = require("./connection");
 connect(process.env.MONGO_URI);
 const { rt1 } = require("./routes/LOG_ROUTES");
+const { rt2 } = require("./routes/USER_ROUTES");
+const { USER } = require("./models/USER_MODEL");
+const { create_token_for_user } = require("./services/service");
 
 //from dependencies
 const express = require("express");
@@ -17,10 +20,10 @@ const fileupload = require("express-fileupload");
 const app = express();
 
 //configuration-----------
-const websites = ["http://localhost:3000"];
 app.use(fileupload({ useTempFiles: false }));
 app.use(express.static(path.resolve("./public")));
 
+const websites = ["http://localhost:3000"];
 app.use(
   cors({
     origin: websites,
@@ -108,7 +111,7 @@ app.get(
           sameSite: "None",
         });
 
-        res.redirect("http://localhost:8000/user/dashboard");
+        res.redirect("http://localhost:3000/user/dashboard");
       } else if (reqtype === "yess" && req.user.saved == false) {
         const new_user = await USER.create({
           name: req.user.name,
@@ -127,7 +130,7 @@ app.get(
           sameSite: "None",
         });
 
-        res.redirect("http://localhost:8000/set-data");
+        res.redirect("http://localhost:3000/set-data");
       } else if (req.user !== "no user" && reqtype === "yess") {
         const token = create_token_for_user(req.user);
 
@@ -138,16 +141,16 @@ app.get(
           sameSite: "None",
         });
 
-        res.redirect("http://localhost:8000/user/dashboard");
+        res.redirect("http://localhost:3000/user/dashboard");
       }
     } else {
-      res.redirect("http://localhost:8000/signup");
+      res.redirect("http://localhost:3000/signup");
     }
   }
 );
 
 app.use("/log", rt1);
-// app.use("/user", rt2);
+app.use("/user", rt2);
 // app.use("/rag", rt3);
 app.get("/", (req, res) => {
   res.send("HELLO WORLD");
